@@ -10,6 +10,10 @@ def home():
 def salvador():
     return "Hello, Salvador"
 
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
     
 if __name__ == "__main__":
     app.run(debug=True)
