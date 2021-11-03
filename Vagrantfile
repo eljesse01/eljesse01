@@ -2,6 +2,8 @@
 Vagrant.configure("2") do |config|
  
   config.vm.box = "bento/ubuntu-18.04"
+  config.vm.username="el-jesse"
+  config.vm.password="Password"
 
  
   config.vm.provider "virtualbox" do |vb|
