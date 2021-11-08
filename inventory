@@ -1,3 +1,9 @@
+
+[all:vars]
+#ansible_connection=ssh
+#ansible_user=vagrant
+#ansible_ssh_pass=vagrant
+
 machine1 ansible_host=192.168.2.130 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file=vagrant
 #machine2 ansible_host=127.0.0.1 ansible_port=2222 ansible_user='vagrant' ansible_ssh_private_key_file='/home/.../.vagrant/machines/machine2/virtualbox/private_key'
 
