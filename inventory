@@ -1,4 +1,4 @@
-machine1 ansible_host=192.168.2.130 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file='C:/Users/bigja/Github/eljesse01/.vagrant/machines/web/virtualbox/private_key'
+machine1 ansible_host=192.168.2.130 ansible_port=22 ansible_user='vagrant' ansible_ssh_private_key_file=vagrant
 #machine2 ansible_host=127.0.0.1 ansible_port=2222 ansible_user='vagrant' ansible_ssh_private_key_file='/home/.../.vagrant/machines/machine2/virtualbox/private_key'
 
 #[group1]

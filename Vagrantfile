@@ -2,8 +2,8 @@
 Vagrant.configure("2") do |config|
  
   config.vm.box = "bento/ubuntu-18.04"
-  config.ssh.username="el-jesse"
-  config.ssh.password="Password"
+  # config.ssh.username="el-jesse"
+  # config.ssh.password="Password"
 
  
   config.vm.provider "virtualbox" do |vb|
@@ -20,6 +20,14 @@ Vagrant.configure("2") do |config|
     web.vm.provision "ansible_local" do |ansible|
       ansible.playbook = "configure.yml"
     end
+  end
+
+   config.vm.define "db" do |db|
+    db.vm.hostname = "db"
+    db.vm.network "private_network", ip: "192.168.2.132"
+    db.vm.provision "ansible_local" do |ansible|
+      ansible.playbook = "configure.yml"
+     end
   end
   
 
