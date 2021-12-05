@@ -1,0 +1,15 @@
+- hosts: haproxy
+  become: yes
+
+  tasks: 
+    - name: Upgrade all packagees on servers
+    apt:
+      upgrade: dist
+      update_cache: yes
+      force_apt_get: yes 
+      loop: [ 'aptitude' ]
+
+    - name: Install haproxy
+      apt: 
+       name: 
+        - haproxy 

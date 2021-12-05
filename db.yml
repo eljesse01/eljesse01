@@ -1,0 +1,57 @@
+- hosts: database
+  become: yes 
+
+  tasks:
+    - name: Upgrade all apt packages
+      apt: upgrade=dist force_apt_get=yes
+
+    - name: install mysql -server  
+      apt: name=mysql-server
+  # making it sudo
+    - name: Allow everything and enable UFW
+      community.general.ufw:
+        state: enabled
+        # policy: allow
+    - name: Allow all access to tcp port 3306
+      community.general.ufw:
+        rule: allow
+        port: '3306'
+        proto: tcp     
+
+    - name: Allow all access to tcp port 22
+      community.general.ufw:
+        rule: allow
+        port: '22'
+        proto: tcp             
+
+    - name: creating mysql user admin
+      mysql_user:
+        name: "admin"
+        password: "Devops1!!"
+        priv: '*.*:ALL'
+        host: '%'
+        state: present
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+
+    - name: Enable remote login to mysql by allowing all hosts to connect and notify restart sql
+      lineinfile:
+         path: /etc/mysql/mysql.conf.d/mysqld.cnf
+         regexp: '^bind-address'
+         line: 'bind-address = 0.0.0.0'
+         backup: yes
+      notify:
+         - Restart mysql    
+  handlers:
+    - name: Restart mysql
+      service:
+        name: mysql
+        state: restarted
+
+# 1.update all packages
+# 2.install mysql-server 
+# 3. enable ufw firewall
+# 4.# sudo ufw allow mysql
+# 5. sudo ufw allow ssh
+# 6. Run mysql sql 
+# 7. sudo sed -i "s/.*bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/mysql.conf.d/mysqld.cnf
+# 8.restart  systemctl restart mysql

@@ -2,7 +2,21 @@
 - hosts: all
   become: yes
 
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    username: "el-jesse"
+    user_email: "kwabs.amaoah.ka@gmail.com"
+
+  
+
   tasks:
+
+  - name: Upgrade all packagees on servers
+    apt:
+      upgrade: dist
+      update_cache: yes
+      force_apt_get: yes 
+
   - name: Install all necessary on debian based distros
     apt:
       name:
@@ -12,23 +26,43 @@
         - build-essential
         - libssl-dev
         - python3
-        - python3-pip
+        - python3-pipansi
+        - python3-venv
+        - python3-setuptools
+        - python3-wheel
+        - ansible
         - apache2
-        
-      state: present
+        - awscli
+        - Git
+        - ntp
+      state: lastest
       update_cache: true
 
-  - name: Copy file with owner and permissions
-    copy:
-      src: index.html
-      dest: /var/www/html/index.html
-      owner: root
+      
 
-  - name: ensure apache service is running
-    service: 
-      name: apache2
-      state: started
-      enabled: true
+  - name: Setup initial git config
+    shell: 
+      git config --global user.name "{{ ansible_user }}"
+      git config --global user.email "{{ ansible_user_email }}"
+      
+  
+  - name: Copy aws credentials to new server
+    copy:
+      src: ~/.aws
+      dest: /home/vagrant/.aws
+      
+  
+      # - name: Copy file with owner and per missions
+  #   copy:
+  #     src: index.html
+  #     dest: /var/www/html/index.html
+  #     owner: root
+
+  # - name: ensure apache service is running
+  #   service: 
+  #     name: apache2
+  #     state: started
+  #     enabled: true
  
        
     # when: ansible_os_family == 'Debian'
