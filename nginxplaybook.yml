@@ -78,41 +78,41 @@
         login_user: root
         login_password: "password"     
 
-    - name: Download and unpack latest WordPress
-      unarchive:
-        src: https://wordpress.org/latest.tar.gz
-        dest: "/var/www/devops"
-        remote_src: yes
-        creates: "/var/www/devops/wordpress"
+    # - name: Download and unpack latest WordPress
+    #   unarchive:
+    #     src: https://wordpress.org/latest.tar.gz
+    #     dest: "/var/www/devops"
+    #     remote_src: yes
+    #     creates: "/var/www/devops/wordpress"
  
-    - name: Set ownership
-      file:
-        path: "/var/www/devops"
-        state: directory
-        recurse: yes
-        owner: apache
-        group: apache
+    # - name: Set ownership
+    #   file:
+    #     path: "/var/www/devops"
+    #     state: directory
+    #     recurse: yes
+    #     owner: apache
+    #     group: apache
  
-    - name: Set permissions for directories
-      shell: "/usr/bin/find /var/www/devops/wordpress/ -type d -exec chmod 750 {} \\;"
+    # - name: Set permissions for directories
+    #   shell: "/usr/bin/find /var/www/devops/wordpress/ -type d -exec chmod 750 {} \\;"
  
-    - name: Set permissions for files
-      shell: "/usr/bin/find /var/www/devops/wordpress/ -type f -exec chmod 640 {} \\;"
+    # - name: Set permissions for files
+    #   shell: "/usr/bin/find /var/www/devops/wordpress/ -type f -exec chmod 640 {} \\;"
  
-    - name: Copy sample config file
-      command: mv /var/www/devops/wordpress/wp-config-sample.php /var/www/devops/wordpress/wp-config.php creates=/var/www/devops/wordpress/wp-config.php
-      become: yes
+    # - name: Copy sample config file
+    #   command: mv /var/www/devops/wordpress/wp-config-sample.php /var/www/devops/wordpress/wp-config.php creates=/var/www/devops/wordpress/wp-config.php
+    #   become: yes
  
-    - name: Update WordPress config file
-      lineinfile:
-        path: "/var/www/devops/wordpress/wp-config.php"
-        regexp: "{{item.regexp}}"
-        line: "{{item.line}}"
-      with_items:
-        - {'regexp': "define\\( 'DB_NAME', '(.)+' \\);", 'line': "define( 'DB_NAME', 'wpdb' );"}
-        - {'regexp': "define\\( 'DB_USER', '(.)+' \\);", 'line': "define( 'DB_USER', 'wpuser' );"}
-        - {'regexp': "define\\( 'DB_PASSWORD', '(.)+' \\);", 'line': "define( 'DB_PASSWORD', 'password' );"}
+    # - name: Update WordPress config file
+    #   lineinfile:
+    #     path: "/var/www/devops/wordpress/wp-config.php"
+    #     regexp: "{{item.regexp}}"
+    #     line: "{{item.line}}"
+    #   with_items:
+    #     - {'regexp': "define\\( 'DB_NAME', '(.)+' \\);", 'line': "define( 'DB_NAME', 'wpdb' );"}
+    #     - {'regexp': "define\\( 'DB_USER', '(.)+' \\);", 'line': "define( 'DB_USER', 'wpuser' );"}
+    #     - {'regexp': "define\\( 'DB_PASSWORD', '(.)+' \\);", 'line': "define( 'DB_PASSWORD', 'password' );"}
      
-    - name: Restart httpd service
-      systemd: name=httpd state=restarted
-      become: yes
+    # - name: Restart httpd service
+    #   systemd: name=httpd state=restarted
+    #   become: yes
