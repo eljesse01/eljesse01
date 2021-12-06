@@ -1,23 +1,12 @@
+[nginx]
+192.168.2.141
 
-[app]
-192.168.2.130
-192.168.2.131
 
-[database]
-192.168.2.132
-
-[multi]
-192.168.2.130
-192.168.2.131
-192.168.2.132
-
-[multi:vars]
-ansible_ssh_user=vagrant
-ansible_ssh_pass=vagrant
-
-[py3-hosts]
-ubuntu16
-fedora27
-
-[py3-hosts:vars]
-ansible_python_interpreter=/usr/bin/python3
+# nginx:
+#   hosts:
+#     ubuntu
+#   vars:
+#     domain: helloworld.com
+#     ansible_user: ubuntu
+#     ansible_ssh_private_key_file: ~/.ssh/id_rsa
+#     ansible_sudo_pass: qwerty
