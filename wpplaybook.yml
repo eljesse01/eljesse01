@@ -166,6 +166,48 @@
         - {'regexp': "define\\( 'DB_NAME', '(.)+' \\);", 'line': "define( 'DB_NAME', 'wpdb' );"}
         - {'regexp': "define\\( 'DB_USER', '(.)+' \\);", 'line': "define( 'DB_USER', 'wpuser' );"}
         - {'regexp': "define\\( 'DB_PASSWORD', '(.)+' \\);", 'line': "define( 'DB_PASSWORD', 'password' );"}
+
+
+    - name: Install Mysql Repository
+      yum: name=https://dev.mysql.com/get/mysql57-community-release-el7-9.noarch.rpm update_cache=yes state=latest
+
+    - name: Installing mysql and extensions
+      yum:
+        name:
+          - mysql-server
+    - name: Install MySQL-python, this is required for the task remove anonymous user
+      yum: 
+        name: 
+          - MySQL-python 
+        state: present
+
+    - name: Start mysqld service
+      systemd: name=mysqld state=started enabled=yes
+      
+    - name: get root password
+      shell: "grep 'A temporary password is generated for root@localhost' /var/log/mysqld.log | awk -F ' ' '{print $(NF)}'"
+      register: root_password
+      
+    - name: update expired root user password
+      command: mysql --user root --password={{ root_password.stdout }} --connect-expired-password --execute="ALTER USER 'root'@'localhost' IDENTIFIED BY '{{ root_password.stdout }}';"  
+        
+    - name: Create MySQL user
+      mysql_user:
+        login_host: 'localhost'
+        login_user: 'root'
+        login_password: '{{ root_password.stdout }}'
+        name: 'wpuser'
+        password: 'password'
+        state: present
+        login_unix_socket: /var/lib/mysql/mysql.sock
+
+    - name: Creates mysql database for WordPress
+      mysql_db:
+        name: "wpdb"
+        state: present
+        login_user: root
+        login_password: '{{ root_password.stdout }}'       
+
        
   handlers:
     - name: restart php-fpm
