@@ -1,0 +1,1 @@
+{"virtualbox":{"/data":{"guestpath":"/data","hostpath":"/home/eljesse/Github/eljesse01","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"/home/eljesse/Github/eljesse01","disabled":false,"__vagrantfile":true}}}
