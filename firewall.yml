@@ -1,3 +1,0 @@
-- hosts: nginx   
-  become: true
-  tasks:

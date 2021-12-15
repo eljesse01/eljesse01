@@ -33,11 +33,9 @@
     state: present
     login_unix_socket: /var/lib/mysql/mysql.sock
 
-s- name: Creates mysql database for WordPress
+- name: Creates mysql database for WordPress
   mysql_db:
     name: "wpdb"
     state: present
     login_user: wpuser
-    login_password: password       
-
-    
+    login_password: password  
