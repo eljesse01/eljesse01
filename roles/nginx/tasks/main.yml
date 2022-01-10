@@ -1,14 +1,5 @@
-- name: Install nginx web server
-  yum: name=nginx state=installed update_cache=true
+  - include_tasks: ubuntu.yml
+    when: ansible_distribution == 'Ubuntu'
 
-- name: Start Nginx
-  service: name=nginx enabled=yes state=started
-
-- name: Copy nginx configuration for wordpress
-  template: src=default.conf dest=/etc/nginx/conf.d/default.conf
-  # notify: restart nginx
-- name: restart nginx
-  service: name=nginx state=restarted enabled=yes 
-
-- name: http service state
-  service: name=nginx state=started enabled=yes
+  - include_tasks: centos.yml
+    when: ansible_distribution == 'CentOS'

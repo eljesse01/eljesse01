@@ -1,10 +1,17 @@
-- hosts: nginx   
+- hosts: all   
   become: true
   roles:
     - nginx
     - php
     - mysql 
     - wordpress
+  # tasks:
+  # - include_tasks: ubuntuplaybook.yml
+  #   when: ansible_distribution == 'Ubuntu'
+
+  # - include_tasks: centosplaybook.yml
+  #   when: ansible_distribution == 'CentOS'
+  
     
       
       
