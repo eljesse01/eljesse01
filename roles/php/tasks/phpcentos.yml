@@ -1,0 +1,92 @@
+- name: Install PHP Remi Repository
+  yum: name=http://rpms.remirepo.net/enterprise/remi-release-7.rpm update_cache=yes state=latest
+
+- name: Installing php and extensions
+  yum:
+    enablerepo: "remi,remi-php70"
+    name:
+      - php
+      - php-common
+      - php-cli
+      - php-gd
+      - php-curl 
+      - php-mysqlnd
+      - php-fpm
+      - php-mysqli
+      - php-mbstring
+      - php-xml 
+      - php-xmlrpc 
+      - php-soap
+      - php-intl
+      - php-zip
+      - php-opcache 
+      - php-pecl-apcu
+      - php-pear 
+      - php-pdo 
+      - php-mysqlnd 
+      - php-pgsql 
+      - php-pecl-mongodb 
+      - php-pecl-redis
+      - php-pecl-memcache 
+      - php-pecl-memcached
+      - php-gd
+      - php-mcrypt
+    state: latest
+
+- name: make nginx owner of web directory
+  file:
+    path: /usr/share/nginx/html
+    recurse: yes
+    owner: nginx
+    group: nginx
+
+- name: change php user to nginx
+  lineinfile:
+    path: /etc/php-fpm.d/www.conf
+    regexp: '^{{ item.apache }}'
+    line: '{{ item.nginx }}'
+  loop:
+  - user:
+    apache: "user ="
+    nginx: "user = nginx"
+  - group: 
+    apache: "group ="
+    nginx: "group = nginx"
+  notify: restart php
+
+- name: listen on unix socket not tcp/ip
+  lineinfile:
+    path: /etc/php-fpm.d/www.conf
+    regexp: "listen ="
+    line: "listen = /var/run/php-fpm/php-fpm.sock"
+    state: present
+  notify: restart php
+
+- name: listen on unix socket not tcp/ip
+  lineinfile:
+    path: /etc/php-fpm.d/www.conf
+    regexp: ";listen.owner = nobody"
+    line: "listen.owner = nginx"
+    state: present
+  notify: restart php
+
+- name: listen on unix socket not tcp/ip
+  lineinfile:
+    path: /etc/php-fpm.d/www.conf
+    regexp: ";listen.group = nobody"
+    line: "listen.group = nginx"
+    state: present
+  notify: restart php   
+
+- name: create php test page
+  copy:
+    dest: /usr/share/nginx/html/index.php
+    content: "<?php phpinfo(); ?>"
+    owner: nginx
+    group: nginx
+  notify:
+  - restart nginx
+  - restart php
+
+
+  #random

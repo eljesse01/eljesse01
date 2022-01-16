@@ -39,22 +39,29 @@
 Vagrant.configure("2") do |config|
   
   config.vm.synced_folder ".", "/data"
-  config.vm.box = "bento/centos-7"
   config.vm.synced_folder ".", "/vagrant"
     config.vm.provider "virtualbox" do |v|
       v.linked_clone = true
-      v.memory = 1024
+      v.memory = 512
       v.cpus = 1
     end
   
-    config.vm.define "nginx" do |nginx|
-    nginx.vm.hostname = "nginx"
-    nginx.vm.network "private_network", ip: "192.168.56.2"
-    nginx.vm.provision "ansible_local" do |ansible|
-      ansible.playbook = "wpplaybook.yml"
+    config.vm.define "centos" do |centos|
+      centos.vm.hostname = "centos"
+      centos.vm.box = "bento/centos-7"
+      centos.vm.network "private_network", ip: "192.168.56.2"
+      centos.vm.provision "ansible_local" do |ansible|
+        ansible.playbook = "wpplaybook.yml"
+      end
     end
+
+    config.vm.define "ubuntu" do |ubuntu|
+      ubuntu.vm.hostname = "ubuntu"
+      ubuntu.vm.box = "bento/ubuntu-20.04"
+      ubuntu.vm.network "private_network", ip: "192.168.56.3"
+      ubuntu.vm.provision "ansible_local" do |ansible|
+        ansible.playbook = "wpplaybook.yml"
+      end
     end
-  
-  
-    
+
   end
