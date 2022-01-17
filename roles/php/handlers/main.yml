@@ -10,3 +10,8 @@
   service:
     name: php-fpm
     state: restarted
+
+- name: reload Nginx
+  service:
+    name: nginx
+    state: reloaded

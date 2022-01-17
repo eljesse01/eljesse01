@@ -2,3 +2,10 @@
   apt: name=nginx state=latest
   notify:
     - restart nginx
+
+- name: Sets Nginx conf file
+  template:
+    src: "files/nginx.conf.j2"
+    dest: "/etc/nginx/sites-available/{{ http_conf }}"
+  notify:
+    - restart nginx
