@@ -1,0 +1,5 @@
+- include_tasks: ubuntumysql.yml
+  when: ansible_distribution == 'Ubuntu'
+
+- include_tasks: centosmysql.yml
+  when: ansible_distribution == 'CentOS'

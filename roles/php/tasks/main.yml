@@ -1,0 +1,5 @@
+- include_tasks: phpubuntu.yml
+  when: ansible_distribution == 'Ubuntu'
+
+- include_tasks: phpcentos.yml
+  when: ansible_distribution == 'CentOS'

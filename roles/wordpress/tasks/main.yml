@@ -1,0 +1,5 @@
+- include_tasks: wpubuntu.yml
+  when: ansible_distribution == 'Ubuntu'
+
+- include_tasks: wpcentos.yml
+  when: ansible_distribution == 'CentOS'
